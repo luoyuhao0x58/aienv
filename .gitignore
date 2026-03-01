@@ -1,0 +1,5 @@
+.env
+*.bak
+.DS_Store
+.data/
+compose.override.yml

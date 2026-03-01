@@ -1,0 +1,32 @@
+networks:
+  ai0:
+    name: ai0
+    driver: bridge
+services:
+  openclaw:
+    image: "openclaw:${OPENCLAW_VERSION:-latest}"
+    hostname: "openclaw"
+    container_name: "${COMPOSE_PROJECT_NAME}-openclaw"
+    build:
+      args:
+        USER_ID: "${USER_ID:-1000}"
+        GROUP_ID: "${GROUP_ID:-1000}"
+        USER_NAME: ${USER_NAME:-openclaw}
+        USER_HOME: ${USER_HOME:-/home/openclaw}
+        OPENCLAW_VERSION: "${OPENCLAW_VERSION:-latest}"
+      context: ./openclaw
+      dockerfile: Dockerfile
+    environment:
+      CLAWHUB_TOKEN: "${CLAWHUB_TOKEN}"
+    volumes:
+      - type: volume
+        source: data
+        target: "${USER_HOME:-/home/openclaw}"
+    ports:
+      - 18789:18789
+      - 18790:18790
+    networks:
+      ai0:
+
+volumes:
+  data:
